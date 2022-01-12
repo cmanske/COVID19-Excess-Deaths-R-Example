@@ -30,9 +30,7 @@ library(ggplot2)
 library(lubridate)
 library(pracma)
 ```
-ggplot 2 for graphing data
-lubridate to tinker with dates
-pracma, bsts, and forecast for time-series
+`ggplot2` for graphing data; `lubridate` to tinker with dates; `pracma`, `bsts`, and `forecast` for time-series; 
 
 ## Step 2:  Find and clean
 ### Source 1 = Weekly Counts of Death by Jurisdiction and Select Causes of Death (https://data.cdc.gov/NCHS/Weekly-Counts-of-Death-by-Jurisdiction-and-Select-/u6jv-9ijr)
