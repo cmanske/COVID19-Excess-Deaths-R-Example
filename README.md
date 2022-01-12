@@ -33,9 +33,12 @@ library(pracma)
 `ggplot2` for graphing data; `lubridate` to tinker with dates; `pracma`, `bsts`, and `forecast` for time-series; 
 
 ## Step 2:  Find and clean
-### Source 1 = Weekly Counts of Death by Jurisdiction and Select Causes of Death (https://data.cdc.gov/NCHS/Weekly-Counts-of-Death-by-Jurisdiction-and-Select-/u6jv-9ijr)
-### Source 2 = Weekly Counts of Deaths by Jurisdiction and Age (https://data.cdc.gov/NCHS/Weekly-Counts-of-Deaths-by-Jurisdiction-and-Age/y5bj-9g5w)
-### Source 3 = Provisional COVID19 Death Counts by Week Ending Date and State (https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Week-Ending-D/r8kw-7aab)
+### Source 1 = Weekly Counts of Death by Jurisdiction and Select Causes of Death 
+### ----->    (https://data.cdc.gov/NCHS/Weekly-Counts-of-Death-by-Jurisdiction-and-Select-/u6jv-9ijr)
+### Source 2 = Weekly Counts of Deaths by Jurisdiction and Age 
+### ----->    (https://data.cdc.gov/NCHS/Weekly-Counts-of-Deaths-by-Jurisdiction-and-Age/y5bj-9g5w)
+### Source 3 = Provisional COVID19 Death Counts by Week Ending Date and State 
+### ----->    (https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Week-Ending-D/r8kw-7aab)
 Future update:  Load directly to R, skip downloading to my PC
 ```
 ################################################## 
@@ -241,6 +244,7 @@ tsObjectDaily <- ts(vectorTemp, start = as.Date('2015-01-10', format = '%Y-%m-%d
 ```
 
 Moving Averages are not going to be great models for this project.  They have many strengths for smoothing and extrapolating data, but with the seasonality of the data, we will save time by skipping these.  
+
 https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/movavg
 ```
 ################################################## 
@@ -280,6 +284,7 @@ https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/movavg
 ```
 
 Season and Trend Decomposition
+
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/forecast.stl
 ```
 ################################################## 
@@ -322,6 +327,7 @@ prdct_STDecomp_RandomWalk <- forecast(fcst_STDecomp_RandomWalk, sum(is.na(foreca
 ```
 
 Autoregressive Integrated Moving Average (ARIMA) 
+
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/auto.arima
 ```
 ################################################## 
@@ -355,6 +361,7 @@ prdct_ARIMA_NonSeasonal <- forecast(fcst_ARIMA_NonSeasonal, sum(is.na(forecastDa
 
 
 Holt-Winters Exponential Smoothing
+
 https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/HoltWinters
 ```
 ################################################## 
@@ -382,6 +389,7 @@ prdct_HoltWinters_Mult <- forecast(fcst_HoltWinters_Mult, sum(is.na(forecastData
 ```
 
 Double Seasonal Holt-Winters
+
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/dshw
 ```
 ################################################## 
@@ -408,6 +416,7 @@ prdct_DSHoltWinters2 <- forecast(fcst_DSHoltWinters2, sum(is.na(forecastData$Vol
 ```
 
 BATS & TBATS
+
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/tbats
 ```
 ################################################## 
@@ -434,6 +443,7 @@ prdct_TBATS_Trigonometric <- forecast(fcst_TBATS_Trigonometric, sum(is.na(foreca
 ```
 
 Time Series Neural Network
+
 https://www.rdocumentation.org/packages/forecast/versions/8.4/topics/nnetar
 ```
 ################################################## 
@@ -556,12 +566,15 @@ rm(list = ls(pattern = '^tsReg_'))
 ```
 
 Bayesian Structural Time Series
+
 https://www.rdocumentation.org/packages/bsts/versions/0.9.7/topics/bsts
-This section creates Bayesian structural time series models.  This package appears to be very powerful and you can create a lot of customized components for your model.  I spent a little time on these, but did not go overboard.  
 ```
 ################################################## 
 # BAYESIAN STRUCTURAL TIME SERIES     
 ################################################## 
+```
+This section creates Bayesian structural time series models.  This package appears to be very powerful and you can create a lot of customized components for your model.  I spent a little time on these, but did not go overboard.  
+```
 # NOTES:  Uses MCMC to sample from the posterior distribution of a 
 #         Bayesian structural time series model. 
 # ARGUMENTS:
@@ -768,8 +781,7 @@ write.table(fitStats,
             col.names = T)
 ```
 
-This is where I'd normally dump the results into Excel.
-My favored comparisons are the root mean squared error (RMSE) and mean absolute percent error (MAPE)
+This is where I'd normally dump the results into Excel.  My favored comparisons are the root mean squared error (RMSE) and mean absolute percent error (MAPE)
 ```
 ################################################## 
 # SUMMARY AND RESULTS    
