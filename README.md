@@ -184,8 +184,7 @@ forecastData$Month <- as.factor(forecastData$Month)
 # PLOT DATA SERIES    
 ##################################################
 ```
-First plot is a very basic check.  Look for weird outliers, especially at the beginning and end of the dataset
-The first iteration of this project had an incomplete first week of data.  The CDC has updated their files
+First plot is a very basic check.  Look for weird outliers, especially at the beginning and end of the dataset.  The first iteration of this project had an incomplete first week of data.  The CDC has updated their files.  
 ```
 ggplot(data = forecastData, aes(x = Date, y = Volume)) +
      geom_line() +
@@ -194,8 +193,7 @@ ggplot(data = forecastData, aes(x = Date, y = Volume)) +
 ```
 ![Plot1](https://user-images.githubusercontent.com/14900746/149211444-6d1f08ab-2dc5-4452-8f82-4ae195d88ea1.png)
 
-The next few steps are to check for seasonality in the data
-(We all know there is probably seasonality, even before checking, but let's check anyway)
+The next few steps are to check for seasonality in the data. 
 ```
 # EXPLORE SEASONALITY
 # Plot Overlapping Years by Month
@@ -226,7 +224,8 @@ ggplot(data = forecastData, aes(x = week(Date),
 
 ## Step 4:  Build a lot of models
 This step is the meat & potatoes of the project.  I will build a lot of models in this section.  
-First, some models need to be built with a vector and some need to use a time series object
+
+Some models need to be built with a vector and some need to use a time series object
 ```
 ################################################## 
 # CREATE DAILY VECTOR OBJECT (FORCED > 0.00)    
