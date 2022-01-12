@@ -243,13 +243,15 @@ vectorTemp <- as.vector(forecastData[!is.na(forecastData[, 'Volume']), 'Volume']
 tsObjectDaily <- ts(vectorTemp, start = as.Date('2015-01-10', format = '%Y-%m-%d'), frequency = 52)
 ```
 
-Moving Averages are not going to be great models for this project.  They have many strengths for smoothing and extrapolating data, but with the seasonality of the data, we will save time by skipping these.  
-
+### Moving Average
 https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/movavg
 ```
 ################################################## 
 # MOVING AVERAGES    
 ################################################## 
+```
+Moving Averages are not going to be great models for this project.  They have many strengths for smoothing and extrapolating data, but with the seasonality of the data, we will save time by skipping these.  
+```
 # NOTES:  Different types of moving average of a time series.
 # ARGUMENTS:
 #    x    == time series as numeric vector.
@@ -283,8 +285,7 @@ https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/movavg
 # autoplot(prdct_MovingAvg_04week_Running)
 ```
 
-Season and Trend Decomposition
-
+### Season and Trend Decomposition
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/forecast.stl
 ```
 ################################################## 
@@ -326,8 +327,7 @@ prdct_STDecomp_RandomWalk <- forecast(fcst_STDecomp_RandomWalk, sum(is.na(foreca
 # autoplot(prdct_STDecomp_RandomWalk)
 ```
 
-Autoregressive Integrated Moving Average (ARIMA) 
-
+### Autoregressive Integrated Moving Average (ARIMA) 
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/auto.arima
 ```
 ################################################## 
@@ -360,8 +360,7 @@ prdct_ARIMA_NonSeasonal <- forecast(fcst_ARIMA_NonSeasonal, sum(is.na(forecastDa
 ```
 
 
-Holt-Winters Exponential Smoothing
-
+### Holt-Winters Exponential Smoothing
 https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/HoltWinters
 ```
 ################################################## 
@@ -388,8 +387,7 @@ prdct_HoltWinters_Mult <- forecast(fcst_HoltWinters_Mult, sum(is.na(forecastData
 # autoplot(prdct_HoltWinters_Mult)
 ```
 
-Double Seasonal Holt-Winters
-
+### Double Seasonal Holt-Winters
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/dshw
 ```
 ################################################## 
@@ -415,8 +413,7 @@ prdct_DSHoltWinters2 <- forecast(fcst_DSHoltWinters2, sum(is.na(forecastData$Vol
 # autoplot(prdct_DSHoltWinters2)
 ```
 
-BATS & TBATS
-
+### BATS & TBATS
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/tbats
 ```
 ################################################## 
@@ -442,8 +439,7 @@ prdct_TBATS_Trigonometric <- forecast(fcst_TBATS_Trigonometric, sum(is.na(foreca
 # autoplot(prdct_TBATS_Trigonometric)
 ```
 
-Time Series Neural Network
-
+### Time Series Neural Network
 https://www.rdocumentation.org/packages/forecast/versions/8.4/topics/nnetar
 ```
 ################################################## 
@@ -511,6 +507,7 @@ rm(list = ls(pattern = '^prdct_'))
 rm(list = ls(pattern = '^fcst_'))
 ```
 
+### Regression
 This section creates different time series regressions, tinkering with the strength of the time_period variable.
 ```
 ################################################## 
@@ -565,8 +562,7 @@ rm(tsRegressionList)
 rm(list = ls(pattern = '^tsReg_'))
 ```
 
-Bayesian Structural Time Series
-
+### Bayesian Structural Time Series
 https://www.rdocumentation.org/packages/bsts/versions/0.9.7/topics/bsts
 ```
 ################################################## 
