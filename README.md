@@ -12,32 +12,24 @@ I originally completed this analysis because I wanted to validate the excess dea
 
 ## Step 1:  House Cleaning
 ### Tabula RASA to clear anything in my workspace and clean memory
-`################################################## `
-
-`# TABULA RASA     `
-
-`################################################## `
-
-`rm(list = ls(pattern = ''))`
-
-`gc()`
-
+```
+################################################## 
+# TABULA RASA     
+################################################## 
+rm(list = ls(pattern = ''))
+gc()
+```
 ### Load the libraries required
-`################################################## `
-
-`# LOAD LIBRARIES     `
-
-`################################################## `
-
-`library(bsts)`
-
-`library(forecast)`
-
-`library(ggplot2)`
-
-`library(lubridate)`
-
-`library(pracma)`
+```
+################################################## 
+# LOAD LIBRARIES     
+################################################## 
+library(bsts)
+library(forecast)
+library(ggplot2)
+library(lubridate)
+library(pracma)
+```
 ggplot 2 for graphing data
 lubridate to tinker with dates
 pracma, bsts, and forecast for time-series
