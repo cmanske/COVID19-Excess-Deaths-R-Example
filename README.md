@@ -39,7 +39,8 @@ pracma, bsts, and forecast for time-series
 ### Source 2 = Weekly Counts of Deaths by Jurisdiction and Age (https://data.cdc.gov/NCHS/Weekly-Counts-of-Deaths-by-Jurisdiction-and-Age/y5bj-9g5w)
 ### Source 3 = Provisional COVID19 Death Counts by Week Ending Date and State (https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Week-Ending-D/r8kw-7aab)
 Future update:  Load directly to R, skip downloading to my PC
-`################################################## 
+```
+################################################## 
 # LOAD DATA     
 ################################################## 
 # LOAD FILES
@@ -51,10 +52,11 @@ Source2 <- read.csv(paste0('E:/R Projects/COVID Deaths - Time Series/',
                     header = T, sep = ',', quote = '\"')
 Source3 <- read.csv(paste0('E:/R Projects/COVID Deaths - Time Series/',
                            'Provisional_COVID-19_Death_Counts_by_Week_Ending_Date_and_State.csv'),
-                    header = T, sep = ',', quote = '\"')`
-
+                    header = T, sep = ',', quote = '\"')
+```
 For Source 1, I'm looking for unique/distinct jurisdictions (although my analysis will be at the federal level) and dates.  I am filtering the data to unweighted types, because the alternative is predicted/weighted estimates (predicted/weighted is used for newer data that might not be fully reported yet).  I am taking the sum of the number of deaths because those are broken into various causes of death.  If they included categories like accidents or suicides I would have included the other causes, but those are not included in the statistics.  
-`# CLEAN SOURCE 1 
+```
+# CLEAN SOURCE 1 
 # Aggregate for Total Deaths
 sourceOneData <- aggregate(Number.of.Deaths ~ ï..Jurisdiction + Week.Ending.Date, 
                            data = Source1[Source1$Type == 'Unweighted', ], 
@@ -65,10 +67,12 @@ colnames(sourceOneData)[colnames(sourceOneData) == 'Week.Ending.Date'] <- 'Date'
 colnames(sourceOneData)[colnames(sourceOneData) == 'Number.of.Deaths'] <- 'TotalDeaths_Source1'
 
 # Convert date field to DATE type
-sourceOneData$Date <- as.Date(sourceOneData$Date, format = '%Y-%m-%d')`
+sourceOneData$Date <- as.Date(sourceOneData$Date, format = '%Y-%m-%d')
+```
 
 For Source 2, I am filtering the data to unweighted again, then I take the sum of deaths by unique/distinct jurisdictions and dates.  This data set breaks the deaths by age cohort, but I am not interested in that analysis.  It may be interesting for a future analytic.  
-`# CLEAN SOURCE 2
+```
+# CLEAN SOURCE 2
 # Convert CHARs to INTs
 Source2$Number.of.Deaths <- as.numeric(gsub(',', '', Source2$Number.of.Deaths))
 
@@ -86,10 +90,12 @@ colnames(sourceTwoData)[colnames(sourceTwoData) == 'Week.Ending.Date'] <- 'Date'
 colnames(sourceTwoData)[colnames(sourceTwoData) == 'Number.of.Deaths'] <- 'TotalDeaths_Source2'
 
 # Convert date field to DATE type
-sourceTwoData$Date <- as.Date(sourceTwoData$Date, format = '%m/%d/%Y')`
+sourceTwoData$Date <- as.Date(sourceTwoData$Date, format = '%m/%d/%Y')
+```
 
 For Source 3, I filter for distinct jurisdictions and dates again.  I filter the data for the "by week" data, and I pull the Total Deaths and COVID19 Deaths. 
-`# CLEAN SOURCE 3
+```
+# CLEAN SOURCE 3
 # Convert CHARs to INTs
 Source3$Total.Deaths <- as.numeric(gsub(',', '', Source3$Total.Deaths))
 Source3$COVID.19.Deaths <- as.numeric(gsub(',', '', Source3$COVID.19.Deaths))
@@ -110,17 +116,21 @@ colnames(sourceThreeData)[colnames(sourceThreeData) == 'Total.Deaths'] <- 'Total
 colnames(sourceThreeData)[colnames(sourceThreeData) == 'COVID.19.Deaths'] <- 'CovidDeaths_Source3'
 
 # Convert date field to DATE type
-sourceThreeData$Date <- as.Date(sourceThreeData$Date, format = '%m/%d/%Y')`
+sourceThreeData$Date <- as.Date(sourceThreeData$Date, format = '%m/%d/%Y')
+```
 
 I compared the deaths from Source 1 and Source 3 and from Source 2 and Source 3 for the overlapping periods.  There were a lot of missing deaths from Source 1.  After re-reading the "technical notes" for Source 1, I found it excludes COVID19 and accidents, but Source 2 and Source 3 were very much aligned (99.94% match).
-`# MERGE DATA FRAMES
+```
+# MERGE DATA FRAMES
 inputData <- merge(sourceTwoData, 
                    sourceThreeData, 
                    by = c('Jurisdiction', 'Date'), 
-                   all.x = T)`
+                   all.x = T)
+```
 
 This section can be used to quickly filter the jurisdiction.  For this example, I will use the federal level ('United States')
-`# CLEAN DATA FRAME
+```
+# CLEAN DATA FRAME
  inputData <- inputData[inputData$Jurisdiction == 'United States',]
 # inputData <- inputData[inputData$Jurisdiction == 'New York',]
 # inputData <- inputData[inputData$Jurisdiction == 'California',]
@@ -136,10 +146,12 @@ rm(Source2)
 rm(Source3)
 rm(sourceOneData)
 rm(sourceTwoData)
-rm(sourceThreeData)`
+rm(sourceThreeData)
+```
 
 Now that I have a data frame with the base data, I will start to format data in ways that will be useful (Years, Months, time_period).  
-`################################################## 
+```
+################################################## 
 # CREATE DATA FRAME TO STORE RESULTS    
 ################################################## 
 # NEW DATA FRAME
@@ -165,24 +177,29 @@ forecastData$Year <- format(as.Date(forecastData$Date), format = '%Y')
 forecastData$Year <- as.integer(forecastData$Year)
 
 forecastData$Month <- format(as.Date(forecastData$Date), format = '%B')
-forecastData$Month <- as.factor(forecastData$Month)`
-
+forecastData$Month <- as.factor(forecastData$Month)
+```
 
 ## Step 3:  Plot some data
-`################################################## 
+```
+################################################## 
 # PLOT DATA SERIES    
-##################################################` 
+##################################################
+```
 First plot is a very basic check.  Look for weird outliers, especially at the beginning and end of the dataset
 The first iteration of this project had an incomplete first week of data.  The CDC has updated their files
-`ggplot(data = forecastData, aes(x = Date, y = Volume)) +
+```
+ggplot(data = forecastData, aes(x = Date, y = Volume)) +
      geom_line() +
      scale_x_date(date_labels = '%B-%Y') +
-     geom_point()`
+     geom_point()
+```
 ![Plot1](https://user-images.githubusercontent.com/14900746/149211444-6d1f08ab-2dc5-4452-8f82-4ae195d88ea1.png)
 
 The next few steps are to check for seasonality in the data
 (We all know there is probably seasonality, even before checking, but let's check anyway)
-`# EXPLORE SEASONALITY
+```
+# EXPLORE SEASONALITY
 # Plot Overlapping Years by Month
 ggplot(data = forecastData, aes(x = month(Date, label = T, abbr = T),
                                 y = Volume,
@@ -191,10 +208,12 @@ ggplot(data = forecastData, aes(x = month(Date, label = T, abbr = T),
                                 geom_line() +
                                 geom_point() +
                                 labs(x = 'Month', colour = 'Year') +
-                                theme_classic()`
+                                theme_classic()
+```
 ![Plot2](https://user-images.githubusercontent.com/14900746/149211663-8802c27a-cf2a-4737-8a04-c38365b73852.png)
 
-`# Plot Overlapping Years by Week
+```
+# Plot Overlapping Years by Week
 ggplot(data = forecastData, aes(x = week(Date),
                                 y = Volume,
                                 group = factor(year(Date)),
@@ -202,14 +221,16 @@ ggplot(data = forecastData, aes(x = week(Date),
                                 geom_line() +
                                 geom_point() +
                                 labs(x = 'Week', colour = 'Year') +
-                                theme_classic()`
+                                theme_classic()
+```
 ![Plot3](https://user-images.githubusercontent.com/14900746/149211707-d28b448b-d4a6-4adc-8b7d-70f3e25bfb50.png)
 
 
 ## Step 4:  Build a lot of models
 This step is the meat & potatoes of the project.  I will build a lot of models in this section.  
 First, some models need to be built with a vector and some need to use a time series object
-`################################################## 
+```
+################################################## 
 # CREATE DAILY VECTOR OBJECT (FORCED > 0.00)    
 ################################################## 
 vectorTemp <- as.vector(forecastData[!is.na(forecastData[, 'Volume']), 'Volume'])
@@ -219,12 +240,13 @@ vectorTemp <- as.vector(forecastData[!is.na(forecastData[, 'Volume']), 'Volume']
 ################################################## 
 # CREATE DAILY TIME SERIES OBJECT    
 ################################################## 
-tsObjectDaily <- ts(vectorTemp, start = as.Date('2015-01-10', format = '%Y-%m-%d'), frequency = 52)`
-
+tsObjectDaily <- ts(vectorTemp, start = as.Date('2015-01-10', format = '%Y-%m-%d'), frequency = 52)
+```
 
 Moving Averages are not going to be great models for this project.  They have many strengths for smoothing and extrapolating data, but with the seasonality of the data, we will save time by skipping these.  
 https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/movavg
-`################################################## 
+```
+################################################## 
 # MOVING AVERAGES    
 ################################################## 
 # NOTES:  Different types of moving average of a time series.
@@ -257,12 +279,13 @@ https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/movavg
 # autoplot(prdct_MovingAvg_04week_Triangle)
 # autoplot(prdct_MovingAvg_04week_Weighted)
 # autoplot(prdct_MovingAvg_04week_Exponential)
-# autoplot(prdct_MovingAvg_04week_Running)`
-
+# autoplot(prdct_MovingAvg_04week_Running)
+```
 
 Season and Trend Decomposition
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/forecast.stl
-`################################################## 
+```
+################################################## 
 # SEASON AND TREND DECOMPOSITION MODEL    
 ##################################################
 # NOTES:  Returns forecasts obtained by either ETS or ARIMA models applied to 
@@ -298,11 +321,13 @@ prdct_STDecomp_RandomWalk <- forecast(fcst_STDecomp_RandomWalk, sum(is.na(foreca
 # autoplot(prdct_STDecomp_ETS)
 # autoplot(prdct_STDecomp_ARIMA)
 # autoplot(prdct_STDecomp_Naive)
-# autoplot(prdct_STDecomp_RandomWalk)`
+# autoplot(prdct_STDecomp_RandomWalk)
+```
 
 Autoregressive Integrated Moving Average (ARIMA) 
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/auto.arima
-`################################################## 
+```
+################################################## 
 # AUTO ARIMA    
 ################################################## 
 # NOTES:  Returns best ARIMA model according to either AIC, AICc or BIC value. 
@@ -328,12 +353,14 @@ prdct_ARIMA_NonSeasonal <- forecast(fcst_ARIMA_NonSeasonal, sum(is.na(forecastDa
 
 # PLOT RESULTS
 # autoplot(prdct_ARIMA_Seasonal)
-# autoplot(prdct_ARIMA_NonSeasonal)`
+# autoplot(prdct_ARIMA_NonSeasonal)
+```
 
 
 Holt-Winters Exponential Smoothing
 https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/HoltWinters
-`################################################## 
+```
+################################################## 
 # HOLT-WINTERS EXPONENTIAL SMOOTHING    
 ################################################## 
 # NOTES:  Computes Holt-Winters Filtering of a given time series. Unknown 
@@ -354,11 +381,13 @@ prdct_HoltWinters_Mult <- forecast(fcst_HoltWinters_Mult, sum(is.na(forecastData
 
 # PLOT RESULTS
 # autoplot(prdct_HoltWinters_Add)
-# autoplot(prdct_HoltWinters_Mult)`
+# autoplot(prdct_HoltWinters_Mult)
+```
 
 Double Seasonal Holt-Winters
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/dshw
-`################################################## 
+```
+################################################## 
 # DOUBLE SEASONAL HOLT-WINTERS    
 ################################################## 
 # NOTES:  Returns forecasts using Taylor's (2003) Double-Seasonal HW method.
@@ -378,11 +407,13 @@ prdct_DSHoltWinters2 <- forecast(fcst_DSHoltWinters2, sum(is.na(forecastData$Vol
 
 # PLOT RESULTS
 # autoplot(prdct_DSHoltWinters1)
-# autoplot(prdct_DSHoltWinters2)`
+# autoplot(prdct_DSHoltWinters2)
+```
 
 BATS & TBATS
 https://www.rdocumentation.org/packages/forecast/versions/8.15/topics/tbats
-`################################################## 
+```
+################################################## 
 # BOX-COX, ARMA, TREND, SEASONALITY (TBATS)   
 ################################################## 
 # NOTES:  Fits a TBATS model applied to y, as described in De Livera, 
@@ -402,11 +433,13 @@ fcst_TBATS_Trigonometric <- tbats(tsObjectDaily, use.parallel = FALSE)
 prdct_TBATS_Trigonometric <- forecast(fcst_TBATS_Trigonometric, sum(is.na(forecastData$Volume)))
 
 # PLOT RESULTS
-# autoplot(prdct_TBATS_Trigonometric)`
+# autoplot(prdct_TBATS_Trigonometric)
+```
 
 Time Series Neural Network
 https://www.rdocumentation.org/packages/forecast/versions/8.4/topics/nnetar
-`################################################## 
+```
+################################################## 
 # NEURAL NETWORK TIME SERIES     
 ################################################## 
 # NOTES:  Feed-forward neural networks with a single hidden layer and lagged 
@@ -430,10 +463,12 @@ fcst_Neural_TimeSeries <- nnetar(tsObjectDaily, lambda = 'auto')
 prdct_Neural_TimeSeries <- forecast(fcst_Neural_TimeSeries, sum(is.na(forecastData$Volume)))
 
 # PLOT RESULTS
-# autoplot(prdct_Neural_TimeSeries)`
+# autoplot(prdct_Neural_TimeSeries)
+```
 
 This next section exports all of the time-series results.  The predictions are added to the forecastData dataframe and then exported into their own dataframes.  
-`################################################## 
+```
+################################################## 
 # EXPORT TIME-SERIES RESULTS (DAILY)    
 ################################################## 
 # CREATE LIST OF FORECASTS     
@@ -466,10 +501,12 @@ rm(i)
 rm(forecastDFs)
 rm(forecastList)
 rm(list = ls(pattern = '^prdct_'))
-rm(list = ls(pattern = '^fcst_'))`
+rm(list = ls(pattern = '^fcst_'))
+```
 
 This section creates different time series regressions, tinkering with the strength of the time_period variable.
-`################################################## 
+```
+################################################## 
 # TIME SERIES REGRESSIONS    
 ################################################## 
 # REQUIRE > 1 YEAR OF DAILY DATA
@@ -495,10 +532,12 @@ tsReg_LogTime <- lm(Volume ~ log(time_period, base = exp(1)) + Year + Month, dat
 # }
 # if (AIC(tsReg_LogTime) != -Inf) {
 #      tsReg_LogTime <- stepAIC(tsReg_LogTime, direction = 'both', trace = FALSE)
-# }`
+# }
+```
 
 This section exports the time series regressions.  Like the section above, they are put into the forecastData dataframe, but they are not added to their own dataframes.
-`################################################## 
+```
+################################################## 
 # EXPORT REGRESSION RESULTS (DAILY)    
 ################################################## 
 # CREATE LIST OF REGRESSIONS     
@@ -516,12 +555,14 @@ for (i in 1:length(tsRegressionList)) {
 rm(i)
 rm(tsRegressionData)
 rm(tsRegressionList)
-rm(list = ls(pattern = '^tsReg_'))`
+rm(list = ls(pattern = '^tsReg_'))
+```
 
 Bayesian Structural Time Series
 https://www.rdocumentation.org/packages/bsts/versions/0.9.7/topics/bsts
 This section creates Bayesian structural time series models.  This package appears to be very powerful and you can create a lot of customized components for your model.  I spent a little time on these, but did not go overboard.  
-`################################################## 
+```
+################################################## 
 # BAYESIAN STRUCTURAL TIME SERIES     
 ################################################## 
 # NOTES:  Uses MCMC to sample from the posterior distribution of a 
@@ -624,10 +665,12 @@ tryCatch({
      rm(fcst_BayesianTimeSeries3)
      rm(prdct_BayesianTimeSeries3)
      rm(fitted_BayesianTimeSeries3)
-}, error = function(e) { })`
+}, error = function(e) { })
+```
 
 This section is to find the best model.  The "goodness" of a model is always relative to another model, so I started by creating a dummy model that lags the row by one.  This is because t0 is usually correlated with t1, so the models should be at least as good as saying "tomorrow will be like today."
-`################################################## 
+```
+################################################## 
 # IDENTIFY BEST FORECAST    
 ##################################################
 # NOTE:  To identify the best forecast we will assume t0 is highly 
@@ -656,13 +699,15 @@ ggplot() +
      theme_classic() +
      ylab('Weekly Deaths') +
      xlab('Date') +
-     labs(title = 'Weekly Deaths vs Predicted Weekly Deaths (Lagged)')`
+     labs(title = 'Weekly Deaths vs Predicted Weekly Deaths (Lagged)')
+```
 ![Plot4](https://user-images.githubusercontent.com/14900746/149235283-37d84ce7-415c-496c-8571-24cee62e09a3.png)
 
 
 ## Step 5: Compare all of the models
 This section creates a dataframe with the model comparisons.  If anyone has a suggestion to clean the code here, I'm very open to suggestions. 
-`################################################## 
+```
+################################################## 
 # CALCULATE RMSE FOR ALL FORECASTS    
 ##################################################
 fitStats <- data.frame(list(
@@ -723,13 +768,16 @@ write.table(fitStats,
             file = 'clipboard-128',
             sep = '\t',
             row.names = F,
-            col.names = T)`
+            col.names = T)
+```
 
 This is where I'd normally dump the results into Excel.
 My favored comparisons are the root mean squared error (RMSE) and mean absolute percent error (MAPE)
-`################################################## 
+```
+################################################## 
 # SUMMARY AND RESULTS    
-##################################################`
+##################################################
+```
 
 | MODEL NAME | SEASONAL | RMSE | MAPE | BEATS LAG | BEST |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -757,11 +805,14 @@ My favored comparisons are the root mean squared error (RMSE) and mean absolute 
 
 ## Step 6:  Conclusions
 We now have all of the elements we need to determine the excess deaths.  We have selected our model (STDecomp_ARIMA), the confidence interval for the model, and the actual number of deaths and COVID19-related deaths
-`################################################## 
+```
+################################################## 
 # SUMMARY AND PLOTS    
 ##################################################`
+```
 Some breif setup
-`# ADD COVID ACTUALS INTO DF
+```
+# ADD COVID ACTUALS INTO DF
 finalData <- df_prdct_STDecomp_ARIMA_Results
 finalData$CovidDeaths <- forecastData$CovidDeaths
 finalData$CovidDeaths[is.na(finalData$CovidDeaths)] <- 0
@@ -776,10 +827,12 @@ finalData$FitToVLCRatio <- finalData$Fitted / finalData$VlessC
 
 # REMOVE LAST SEVERAL ROWS OF DATA
 # Potentially incomplete data
-finalData <- finalData[1:(nrow(finalData) - 8), ]`
+finalData <- finalData[1:(nrow(finalData) - 8), ]
+```
 
 The first plot will show the actual deaths vs the predicted deaths.  The black line shows actual deaths, the red line shows predicted deaths, and the gray shaded region shows the confidence interval.  
-`# PLOT ACTUAL VS PREDICTED (+FITTED) 
+```
+# PLOT ACTUAL VS PREDICTED (+FITTED) 
 ggplot() +
      geom_point(data = finalData[finalData$Date >= '2019-01-01', ], aes(x = Date, y = TotalDeaths, color = 'Data')) +
      geom_line(data = finalData[finalData$Date >= '2019-01-01', ], aes(x = Date, y = TotalDeaths, color = 'Data')) +
@@ -798,13 +851,14 @@ ggplot() +
      ylab('Weekly Deaths') + xlab('Date') +
      labs(title = 'Weekly Deaths (USA) vs Predicted Weekly Deaths (STDecomp + ARIMA)',
           subtitle = 'Shaded area is the 95% CI')
-`
+```
 ![Plot5](https://user-images.githubusercontent.com/14900746/149235923-b1eb0e6e-2dcb-4437-b873-3b08c7527a9e.png)
 
 As you can see, the actual deaths far outpace the predicted deaths and exceed the confidence interval.  We can say with confidence that there were excess deaths during this time period.
 
 The second plot shows the actual deaths without COVID19 compared to the predicted deaths.  
-`# PLOT ACTUAL LESS COVID VS PREDICTED (+FITTED) 
+```
+# PLOT ACTUAL LESS COVID VS PREDICTED (+FITTED) 
 ggplot() +
      geom_point(data = finalData[finalData$Date >= '2019-01-01', ], aes(x = Date, y = VlessC, color = 'Data')) +
      geom_line(data = finalData[finalData$Date >= '2019-01-01', ], aes(x = Date, y = VlessC, color = 'Data')) +
@@ -823,7 +877,7 @@ ggplot() +
      ylab('Weekly Deaths') + xlab('Date') +
      labs(title = 'Weekly Deaths (USA) less COVID vs Predicted Weekly Deaths (STDecomp + ARIMA)',
           subtitle = 'Shaded area is the 95% CI')
-`
+```
 ![Plot6](https://user-images.githubusercontent.com/14900746/149236055-76f6bf31-0a7e-49a5-93f0-fc796fa4c42d.png)
 
 As you can see, most of the outliers have cleared away.  This means we can confidently attribute these excess deaths to COVID19.  However, from 03/28/2020 - 04/25/2020 , 07/04/2020 - 09/26/2020, 10/10/2020, 10/17/2020, 11/07/2020, 12/12/2020, 07/03/2021, and 07/31/2021 - 10/02/2021, COVID19 alone does not explain the excess number of deaths.  
