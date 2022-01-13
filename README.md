@@ -187,7 +187,7 @@ forecastData$Month <- as.factor(forecastData$Month)
 # PLOT DATA SERIES    
 ##################################################
 ```
-First plot is a very basic check.  Look for weird outliers, especially at the beginning and end of the dataset.  The first iteration of this project had an incomplete first week of data.  The CDC has updated their files.  
+First plot is a very basic check.  I am looking for any kind of seasonality in the data, but also any weird outliers at the beginning or end of the dataset.  The first iteration of this project had an incomplete first week of data.  The CDC has updated their files.  
 ```
 ggplot(data = forecastData, aes(x = Date, y = Volume)) +
      geom_line() +
