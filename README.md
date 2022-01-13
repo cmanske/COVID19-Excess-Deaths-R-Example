@@ -34,11 +34,12 @@ library(pracma)
 
 ## Step 2:  Find and clean
 ### Source 1 = Weekly Counts of Death by Jurisdiction and Select Causes of Death 
-### ----->    (https://data.cdc.gov/NCHS/Weekly-Counts-of-Death-by-Jurisdiction-and-Select-/u6jv-9ijr)
+(https://data.cdc.gov/NCHS/Weekly-Counts-of-Death-by-Jurisdiction-and-Select-/u6jv-9ijr)
 ### Source 2 = Weekly Counts of Deaths by Jurisdiction and Age 
-### ----->    (https://data.cdc.gov/NCHS/Weekly-Counts-of-Deaths-by-Jurisdiction-and-Age/y5bj-9g5w)
+(https://data.cdc.gov/NCHS/Weekly-Counts-of-Deaths-by-Jurisdiction-and-Age/y5bj-9g5w)
 ### Source 3 = Provisional COVID19 Death Counts by Week Ending Date and State 
-### ----->    (https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Week-Ending-D/r8kw-7aab)
+(https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Week-Ending-D/r8kw-7aab)
+
 Future update:  Load directly to R, skip downloading to my PC
 ```
 ################################################## 
