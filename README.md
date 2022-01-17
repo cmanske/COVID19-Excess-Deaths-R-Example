@@ -816,7 +816,7 @@ We now have all of the elements we need to determine the excess deaths.  We have
 # SUMMARY AND PLOTS    
 ##################################################`
 ```
-Some breif setup
+Some brief setup
 ```
 # ADD COVID ACTUALS INTO DF
 finalData <- df_prdct_STDecomp_ARIMA_Results
