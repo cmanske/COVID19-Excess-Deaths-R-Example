@@ -888,6 +888,47 @@ ggplot() +
 
 As you can see, most of the outliers have cleared away.  This means we can confidently attribute these excess deaths to COVID19.  However, from 03/28/2020 - 04/25/2020 , 07/04/2020 - 09/26/2020, 10/10/2020, 10/17/2020, 11/07/2020, 12/12/2020, 07/03/2021, and 07/31/2021 - 10/02/2021, COVID19 alone does not explain the excess number of deaths.  
 
+## Session Info
+For reference
+```
+> sessionInfo()
+R version 4.1.2 (2021-11-01)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19044)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252
+[2] LC_CTYPE=English_United States.1252
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C
+[5] LC_TIME=English_United States.1252
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+ [1] pracma_2.3.6        lubridate_1.8.0     ggplot2_3.3.5
+ [4] forecast_8.16       bsts_0.9.7          xts_0.12.1
+ [7] zoo_1.8-9           BoomSpikeSlab_1.2.4 Boom_0.9.7
+[10] MASS_7.3-54
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.7        urca_1.3-0        later_1.3.0       pillar_1.6.4     
+ [5] compiler_4.1.2    tools_4.1.2       tseries_0.10-49   digest_0.6.29
+ [9] nlme_3.1-153      jsonlite_1.7.2    lifecycle_1.0.1   tibble_3.1.6
+[13] gtable_0.3.0      lattice_0.20-45   pkgconfig_2.0.3   rlang_0.4.12
+[17] DBI_1.1.2         curl_4.3.2        parallel_4.1.2    withr_2.4.3
+[21] dplyr_1.0.7       systemfonts_1.0.3 generics_0.1.1    vctrs_0.3.8
+[25] lmtest_0.9-39     grid_4.1.2        nnet_7.3-16       tidyselect_1.1.1
+[29] glue_1.6.0        R6_2.5.1          fansi_0.5.0       farver_2.1.0
+[33] TTR_0.24.3        purrr_0.3.4       magrittr_2.0.1    scales_1.1.1
+[37] ellipsis_0.3.2    httpgd_1.2.1      quantmod_0.4.18   assertthat_0.2.1 
+[41] timeDate_3043.102 colorspace_2.0-2  fracdiff_1.5-1    labeling_0.4.2
+[45] quadprog_1.5-8    utf8_1.2.2        munsell_0.5.0     crayon_1.4.2
+```
+
 ## Potential Improvements
 In the future, I could make several improvements.  We could add exogenous factors that flag the earliest appearance of COVID19, the Delta Variant, and the Omicron Variant.  I could make the time-series and Bayesian structural time series models more robust.  We could also test additional models.  
 
