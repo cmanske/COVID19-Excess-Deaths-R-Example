@@ -3,7 +3,7 @@ An example of using time series to calculate the excess deaths from COVID19
 
 ### Author:  Conrad Manske
 ### Created:  12/17/2020
-### Last Edit:  01/13/2022     
+### Last Edit:  01/16/2022     
 
 ## Introduction:
 When the pandemic started, I started an analysis on excess deaths from COVID19 (personal project, not professional).  After a few revisions, I wanted to outline my process.  At the same time, I decided to refresh the project.  I am outlining everything as I do it.  
